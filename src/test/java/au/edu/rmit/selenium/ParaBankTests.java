@@ -362,7 +362,7 @@ class ParaBankSmokeTest {
         // 6. Check that the login failed and an error message is displayed, and NOT the accounts overview page
 
         assertEquals("h1", heading.getTagName());
-        assertNotEquals("Accounts Overview", heading.getText().trim())
+        assertNotEquals("Accounts Overview", heading.getText().trim());
 
         // 7. Close the browser
         driver.quit();
