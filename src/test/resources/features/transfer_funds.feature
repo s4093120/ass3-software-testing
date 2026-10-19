@@ -26,3 +26,11 @@ Feature: Transfer funds between my accounts
       | amount |
       |        |
       | abc    |
+
+  @positive
+  Scenario: Transfer the entire available balance
+    Given my source account has at least 1 dollar available
+    When I transfer all my available funds from my source account to my destination account
+    Then I should receive confirmation of the whole transfer
+    And my source balance should be zero
+    And my destination balance should increase by the full transfer amount

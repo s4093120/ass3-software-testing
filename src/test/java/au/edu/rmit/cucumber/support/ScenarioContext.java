@@ -14,5 +14,6 @@ public class ScenarioContext {
     public String loanAccount;
     public BigDecimal sourceBefore;
     public BigDecimal destinationBefore;
+    public BigDecimal transferredAmount;
     public Map<String, BigDecimal> accountsBeforeLoan;
 }

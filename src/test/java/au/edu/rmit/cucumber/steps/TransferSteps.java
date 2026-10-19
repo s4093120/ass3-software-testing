@@ -26,7 +26,7 @@ public class TransferSteps {
         assertNotNull(context.destinationBefore);
     }
 
-    @Given("my source account has at least {int} dollars available")
+    @Given("my source account has at least {int} dollar(s) available")
     public void verifySufficientFunds(int amount) {
         assertTrue(context.sourceBefore.compareTo(BigDecimal.valueOf(amount)) >= 0,
                 "Test precondition failed: insufficient initial funds for the successful transfer.");
@@ -35,6 +35,13 @@ public class TransferSteps {
     @When("I transfer {int} dollars from my source account to my destination account")
     public void transferAmount(int amount) {
         context.bank.transfer(Integer.toString(amount), context.sourceAccount, context.destinationAccount);
+    }
+
+    @When("I transfer all my available funds from my source account to my destination account")
+    public void transferAllFunds() {
+        context.transferredAmount = context.sourceBefore;
+        context.bank.transfer(context.transferredAmount.toPlainString(),
+                context.sourceAccount, context.destinationAccount);
     }
 
     @When("I attempt a transfer using {string} as the amount")
@@ -48,6 +55,29 @@ public class TransferSteps {
         assertEquals(context.sourceAccount, context.bank.resultText("fromAccountIdResult"));
         assertEquals(context.destinationAccount, context.bank.resultText("toAccountIdResult"));
         assertEquals(0, BigDecimal.valueOf(amount).compareTo(context.bank.resultMoney("amountResult")));
+    }
+
+    @Then("I should receive confirmation of the whole transfer")
+    public void verifyWholeTransferConfirmation() {
+        assertEquals("Transfer Complete!", context.bank.transferHeading());
+        assertEquals(context.sourceAccount, context.bank.resultText("fromAccountIdResult"));
+        assertEquals(context.destinationAccount, context.bank.resultText("toAccountIdResult"));
+        assertEquals(0, context.transferredAmount.compareTo(context.bank.resultMoney("amountResult")),
+                "The confirmation must report the full amount that was transferred.");
+    }
+
+    @Then("my source balance should be zero")
+    public void verifySourceEmptied() {
+        BigDecimal actual = context.bank.accountBalances().get(context.sourceAccount);
+        assertEquals(0, BigDecimal.ZERO.compareTo(actual),
+                "Transferring the entire balance must leave nothing in the source account.");
+    }
+
+    @Then("my destination balance should increase by the full transfer amount")
+    public void verifyDestinationFullCredit() {
+        BigDecimal actual = context.bank.accountBalances().get(context.destinationAccount);
+        assertEquals(0, context.destinationBefore.add(context.transferredAmount).compareTo(actual),
+                "The destination account must be credited by the full transferred amount.");
     }
 
     @Then("my source balance should decrease by {int} dollars")

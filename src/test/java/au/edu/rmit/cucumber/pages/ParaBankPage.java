@@ -110,6 +110,7 @@ public class ParaBankPage {
             case "a missing payee name" -> fill(By.name("payee.name"), "");
             case "mismatched payee account numbers" -> fill(By.name("verifyAccount"), "54321");
             case "a missing payment amount" -> fill(By.name("amount"), "");
+            case "a non-numeric payment amount" -> fill(By.name("amount"), "one hundred");
             default -> throw new IllegalArgumentException("Unknown bill payment condition: " + problem);
         }
         click(By.cssSelector("input[value='Send Payment']"));

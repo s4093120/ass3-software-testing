@@ -21,7 +21,8 @@ Feature: Pay a bill from my bank account
     And my paying account balance should remain unchanged
 
     Examples:
-      | problem                        | message                               |
-      | a missing payee name           | Payee name is required.               |
+      | problem                         | message                              |
+      | a missing payee name            | Payee name is required.              |
       | mismatched payee account numbers | The account numbers do not match.   |
-      | a missing payment amount       | The amount cannot be empty.           |
+      | a missing payment amount        | The amount cannot be empty.          |
+      | a non-numeric payment amount    | Please enter a valid amount.         |

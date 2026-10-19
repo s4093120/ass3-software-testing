@@ -42,6 +42,12 @@ public class LoanSteps {
         context.bank.requestLoan(context.sourceAccount, amount.toPlainString(), downPayment.toPlainString());
     }
 
+    @When("I request a loan using {string} as the amount and {string} as the down payment")
+    public void requestLoanWithValues(String amount, String downPayment) {
+        snapshotAccounts();
+        context.bank.requestLoan(context.sourceAccount, amount, downPayment);
+    }
+
     @Then("my loan request should be approved")
     public void verifyApproval() {
         assertEquals("Approved", context.bank.loanStatus());
@@ -70,6 +76,15 @@ public class LoanSteps {
         assertEquals("Denied", context.bank.loanStatus());
         assertFalse(context.bank.loanDenialExplanation().isBlank());
         assertFalse(context.bank.isVisible("loanRequestApproved"));
+    }
+
+    @Then("I should see the loan request error {string}")
+    public void verifyLoanRequestError(String message) {
+        assertTrue(context.bank.isVisible("requestLoanError"), "A loan form error must be displayed.");
+        assertTrue(context.bank.resultText("requestLoanError").contains(message),
+                "Expected the loan request error to contain: " + message);
+        assertFalse(context.bank.isVisible("loanRequestApproved"),
+                "A rejected loan request must not show an approval.");
     }
 
     @Then("no new loan account should be created")

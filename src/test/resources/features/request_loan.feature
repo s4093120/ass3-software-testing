@@ -21,3 +21,23 @@ Feature: Request a loan
     Then my loan request should be denied with an explanation
     And no new loan account should be created
     And my funding account balance should remain unchanged
+
+  @negative
+  Scenario: A non-positive loan amount is denied
+    When I request a loan using "-100" as the amount and "10" as the down payment
+    Then my loan request should be denied with an explanation
+    And no new loan account should be created
+    And my funding account balance should remain unchanged
+
+  @negative
+  Scenario Outline: Missing or invalid loan details cannot be submitted
+    When I request a loan using "<amount>" as the amount and "<downPayment>" as the down payment
+    Then I should see the loan request error "<error>"
+    And no new loan account should be created
+
+    Examples:
+      | amount | downPayment | error                                               |
+      |        | 10          | An internal error has occurred and has been logged. |
+      | abc    | 10          | An internal error has occurred and has been logged. |
+      | 1000   |             | An internal error has occurred and has been logged. |
+      | 0      | 10          | An internal error has occurred and has been logged. |
