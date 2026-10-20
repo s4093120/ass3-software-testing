@@ -1,12 +1,16 @@
 package au.edu.rmit.selenium;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Duration;
 import java.util.UUID;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 final class TestCustomer {
 
@@ -49,47 +53,74 @@ final class TestCustomer {
 
     }
     
-    // Ensures the customer is registered before running tests.
-    // If the customer is not registered, it will perform the registration process.
-    
-    static void ensureRegistered() throws InterruptedException {
-
-        // If registered, no need to register again.
-
+    static void ensureRegistered() {
         if (registered) {
-
             return;
-        
         }
-
-        // Else, perform the registration process (effectively performing registration tests before every test)
 
         WebDriver driver = new ChromeDriver();
-
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         try {
-
-            driver.get("https://parabank.parasoft.com/parabank/register.htm");
-            Thread.sleep(2000);
-
-            fillRegistrationDetails(driver, USERNAME, PASSWORD, PASSWORD);
-            driver.findElement(By.cssSelector("#customerForm input[type='submit']")).click();
-
-            Thread.sleep(2000);
-
-            String successMessage = "Your account was created successfully. You are now logged in.";
-
-            String pageText = driver.findElement(By.id("rightPanel")).getText();
-
-            assertTrue(pageText.contains(successMessage), "Shared customer registration failed: " + pageText);
-
-            registered = true;
-            
+            registerCustomer(driver);
         } finally {
-
             driver.quit();
+        }
+    }
 
+    static void ensureLoggedIn(WebDriver driver) {
+        ensureRegistered();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        // Login with the shared test customer
+        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+        if (!driver.findElements(By.linkText("Log Out")).isEmpty()) {
+            return;
+        }
+        driver.findElement(By.name("username")).sendKeys(USERNAME);
+        driver.findElement(By.name("password")).sendKeys(PASSWORD);
+        driver.findElement(By.name("login")).findElement(By.className("button")).click();
+        wait.until(ExpectedConditions.or(
+            ExpectedConditions.visibilityOfElementLocated(By.linkText("Log Out")),
+            ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#rightPanel .error"))
+        ));
+
+        if (!driver.findElements(By.linkText("Log Out")).isEmpty()) {
+            return;
         }
 
+        // Recreate the synthetic customer once if the server no longer recognises it
+        String loginError = driver.findElement(By.cssSelector("#rightPanel .error")).getText().trim();
+        assertEquals("The username and password could not be verified.", loginError, "Shared customer login failed: " + loginError);
+        registered = false;
+        try {
+            registerCustomer(driver);
+        } catch (AssertionError registrationError) {
+            throw new AssertionError(
+                "Login was rejected: " + loginError + " Customer recovery failed: "
+                    + registrationError.getMessage(),
+                registrationError
+            );
+        }
+    }
+
+    private static void registerCustomer(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        driver.get("https://parabank.parasoft.com/parabank/register.htm");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("customerForm")));
+        fillRegistrationDetails(driver, USERNAME, PASSWORD, PASSWORD);
+        driver.findElement(By.cssSelector("#customerForm input[type='submit']")).click();
+
+        wait.until(ExpectedConditions.or(
+            ExpectedConditions.visibilityOfElementLocated(By.linkText("Log Out")),
+            ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#rightPanel .error"))
+        ));
+
+        String pageText = driver.findElement(By.id("rightPanel")).getText();
+        assertTrue(
+            pageText.contains("Your account was created successfully. You are now logged in."),
+            "Shared customer registration failed: " + pageText
+        );
+        registered = true;
     }
 
 }
