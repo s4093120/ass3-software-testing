@@ -14,19 +14,21 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 
+//Test Method Orderer for controlling the order of test execution
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Order(2)
 class LoginTest extends BaseTest {
 
     // Login with valid details test
 
     @Test
-    @Order(2)
+    @Order(1)
     void loginWithValidDetails() throws InterruptedException {
 
         // 1. Set valid login password
 
         // 2. Open ParaBank in Chrome
-
 
         driver.get("https://parabank.parasoft.com/parabank/index.htm");
         Thread.sleep(2000);
@@ -51,14 +53,122 @@ class LoginTest extends BaseTest {
         assertEquals("Accounts Overview", heading.getText().trim());
 
         // 6. Close the browser
-
+        driver.quit();
 
     }
 
-    // Login Test with invalidUsername
+    @Test
+    @Order(4)
+    void loginWithBlankDetails() throws InterruptedException{
+
+        // 1. Open ParaBank in Chrome
+
+
+        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+        Thread.sleep(2000);
+
+        // 2. Enter login details
+        
+        driver.findElement(By.name("username")).sendKeys("");
+        driver.findElement(By.name("password")).sendKeys("");
+        Thread.sleep(2000);
+
+        // 3. Login
+
+        WebElement loginForm = driver.findElement(By.name("login"));
+        loginForm.findElement(By.className("button")).click();
+
+        Thread.sleep(2000);
+
+        // 4. Verify login failed
+        WebElement result = driver.findElement(By.id("rightPanel"));
+        WebElement heading = result.findElement(By.className("title"));
+        WebElement error = result.findElement(By.className("error"));
+
+        // assertMissingCredentialsRejected("", "");
+
+        assertEquals("h1", heading.getTagName());
+        assertEquals("Error!", heading.getText().trim());
+        assertTrue(error.isDisplayed(), "Login rejection message should be visible");
+        assertEquals("Please enter a username and password.", error.getText().trim());
+        assertNotEquals("Accounts Overview", heading.getText().trim());
+
+    }
 
     @Test
-    @Order(32)
+    @Order(5)
+    void loginWithBlankUsername() throws InterruptedException{
+
+        // 1. Open ParaBank in Chrome
+
+
+        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+        Thread.sleep(2000);
+
+        // 2. Enter login details
+        
+        driver.findElement(By.name("username")).sendKeys("");
+        driver.findElement(By.name("password")).sendKeys(password);
+        Thread.sleep(2000);
+
+        // 3. Login
+
+        WebElement loginForm = driver.findElement(By.name("login"));
+        loginForm.findElement(By.className("button")).click();
+
+        Thread.sleep(2000);
+
+        // 4. Verify login failed
+        WebElement result = driver.findElement(By.id("rightPanel"));
+        WebElement heading = result.findElement(By.className("title"));
+        WebElement error = result.findElement(By.className("error"));
+
+        // assertMissingCredentialsRejected("", "");
+
+        assertEquals("h1", heading.getTagName());
+        assertEquals("Error!", heading.getText().trim());
+        assertTrue(error.isDisplayed(), "Login rejection message should be visible");
+        assertEquals("Please enter a username and password.", error.getText().trim());
+        assertNotEquals("Accounts Overview", heading.getText().trim());
+
+    }
+
+    @Test
+    @Order(6)
+    void loginWithBlankPassword() throws InterruptedException{
+
+        // 1. Open ParaBank in Chrome
+
+        driver.get("https://parabank.parasoft.com/parabank/index.htm");
+        Thread.sleep(2000);
+
+        // 2. Enter login details
+        
+        driver.findElement(By.name("username")).sendKeys(username);
+        driver.findElement(By.name("password")).sendKeys("");
+        Thread.sleep(2000);
+
+        // 3. Login
+
+        WebElement loginForm = driver.findElement(By.name("login"));
+        loginForm.findElement(By.className("button")).click();
+
+        Thread.sleep(2000);
+
+        // 4. Verify login failed
+        WebElement result = driver.findElement(By.id("rightPanel"));
+        WebElement heading = result.findElement(By.className("title"));
+        WebElement error = result.findElement(By.className("error"));
+
+        assertEquals("h1", heading.getTagName());
+        assertEquals("Error!", heading.getText().trim());
+        assertTrue(error.isDisplayed(), "Login rejection message should be visible");
+        assertEquals("Please enter a username and password.", error.getText().trim());
+        assertNotEquals("Accounts Overview", heading.getText().trim());
+    }
+
+    @Test
+    @Order(2)
     void loginWithInvalidUsername() throws InterruptedException {
 
         // 1. Set valid login password
@@ -104,7 +214,7 @@ class LoginTest extends BaseTest {
     // Login Test with invalidPassword
 
     @Test
-    @Order(33)
+    @Order(3)
     void loginWithInvalidPassword() throws InterruptedException {
 
         // 1. Set valid login password
@@ -138,8 +248,7 @@ class LoginTest extends BaseTest {
         assertEquals("h1", heading.getTagName());
         assertEquals("Error!", heading.getText().trim());
         assertTrue(error.isDisplayed(), "Login rejection message should be visible");
-        assertEquals("The username and password could not be verified.",
-                error.getText().trim());
+        assertEquals("The username and password could not be verified.", error.getText().trim());
         assertNotEquals("Accounts Overview", heading.getText().trim());
 
         // 7. Close the browser
