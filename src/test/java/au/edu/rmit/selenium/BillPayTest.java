@@ -29,17 +29,9 @@ class BillPayTest extends BaseTest {
     void prepareBillPayment() {
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
-        // Login
-        driver.get("https://parabank.parasoft.com/parabank/index.htm");
-        driver.findElement(By.name("username")).sendKeys(username);
-        driver.findElement(By.name("password")).sendKeys(password);
-        driver.findElement(By.name("login")).findElement(By.className("button")).click();
-
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Log Out")));
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(
-            By.cssSelector("#rightPanel h1"),
-            "Accounts Overview"
-        ));
+        // Login and open Accounts Overview
+        TestCustomer.ensureLoggedIn(driver);
+        driver.findElement(By.linkText("Accounts Overview")).click();
 
         // Select an account with enough funds and record its balance
         for (WebElement row : accountRows()) {
