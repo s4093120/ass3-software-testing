@@ -159,10 +159,6 @@ class OpenAccountTest extends BaseTest {
         assertEquals("$100.00", newAccount.findElement(By.cssSelector("td:nth-child(2)")).getText().trim());
         assertEquals("$100.00", newAccount.findElement(By.cssSelector("td:nth-child(3)")).getText().trim());
 
-        // 10. Close the browser
-
-        driver.quit();
-
     }
 
     @Test
@@ -322,10 +318,6 @@ class OpenAccountTest extends BaseTest {
         checkingAccount = findAccountRow(checkingAccountId);
         assertEquals(checkingBalance, checkingAccount.findElement(By.cssSelector("td:nth-child(2)")).getText().trim());
         assertEquals(checkingAvailable, checkingAccount.findElement(By.cssSelector("td:nth-child(3)")).getText().trim());
-
-        // 10. Close the browser
-
-        driver.quit();
 
     }
 
