@@ -26,7 +26,7 @@ class BillPayTest extends BaseTest {
     private BigDecimal balanceBefore;
 
     @BeforeEach
-    void prepareBillPayment() {
+    void prepareBillPayment() throws InterruptedException {
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         // Login and open Accounts Overview
