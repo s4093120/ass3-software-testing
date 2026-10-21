@@ -3,6 +3,7 @@ package au.edu.rmit.selenium;
 import java.time.Duration;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +27,7 @@ class FindTransactionsTest extends BaseTest {
     private String description;
 
     @BeforeEach
-    void prepareTransactionSearch() {
+    void prepareTransactionSearch() throws InterruptedException {
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         // Login and open Find Transactions
@@ -68,6 +69,8 @@ class FindTransactionsTest extends BaseTest {
             ExpectedConditions.visibilityOfElementLocated(By.linkText(description))
         );
         String transactionLink = transaction.getAttribute("href");
+        Assertions.assertNotNull(transactionLink);
+
         transactionId = transactionLink.substring(transactionLink.lastIndexOf('=') + 1);
         WebElement row = transaction.findElement(By.xpath("ancestor::tr"));
         transactionDate = row.findElements(By.tagName("td")).get(0).getText().trim();

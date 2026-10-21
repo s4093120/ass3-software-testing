@@ -64,9 +64,6 @@ class LoginTest extends BaseTest {
         assertEquals("h1", heading.getTagName());
         assertEquals("Accounts Overview", heading.getText().trim());
 
-        // 6. Close the browser
-        driver.quit();
-
     }
 
     @Test

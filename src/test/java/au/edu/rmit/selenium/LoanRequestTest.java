@@ -28,7 +28,7 @@ class LoanRequestTest extends BaseTest {
     private Map<String, BigDecimal> accountsBefore;
 
     @BeforeEach
-    void prepareLoanRequest() {
+    void prepareLoanRequest() throws InterruptedException {
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
         // Login
