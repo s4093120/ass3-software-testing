@@ -112,6 +112,30 @@ class OpenAccountTest extends BaseTest {
         assertEquals("", deposit.findElement(By.cssSelector("td:nth-child(3)")).getText().trim());
         assertEquals("$100.00", deposit.findElement(By.cssSelector("td:nth-child(4)")).getText().trim());
 
+        // 8.5. Retrieve the transaction ID from the Funds Transfer Received link
+
+        WebElement transactionLink = deposit.findElement(By.tagName("a"));
+        String transactionHref = transactionLink.getDomAttribute("href");
+        String transactionId = transactionHref.substring(transactionHref.indexOf("id=") + 3);
+
+        // 8.6. Open the Transaction Details page
+
+        transactionLink.click();
+
+        Thread.sleep(2000);
+
+        // 8.7. Check the transaction details for the opening deposit
+
+        WebElement transactionDetails = driver.findElement(By.id("rightPanel"));
+
+        assertEquals("Transaction Details", transactionDetails.findElement(By.className("title")).getText().trim());
+        assertEquals(transactionId, transactionDetails.findElement(By.cssSelector("table tr:nth-child(1) td:nth-child(2)")).getText().trim());
+        assertTrue(transactionDetails.findElement(By.cssSelector("table tr:nth-child(2) td:nth-child(2)")).getText().trim().matches("[0-9]{2}-[0-9]{2}-[0-9]{4}"),
+                "The transaction date should be displayed as MM-dd-yyyy");
+        assertEquals("Funds Transfer Received", transactionDetails.findElement(By.cssSelector("table tr:nth-child(3) td:nth-child(2)")).getText().trim());
+        assertEquals("Credit", transactionDetails.findElement(By.cssSelector("table tr:nth-child(4) td:nth-child(2)")).getText().trim());
+        assertEquals("$100.00", transactionDetails.findElement(By.cssSelector("table tr:nth-child(5) td:nth-child(2)")).getText().trim());
+
         // 9. Compare the accounts after opening the new account
         driver.findElement(By.linkText("Accounts Overview")).click();
         Thread.sleep(2000);
@@ -247,6 +271,30 @@ class OpenAccountTest extends BaseTest {
         assertEquals("Funds Transfer Received", deposit.findElement(By.tagName("a")).getText().trim());
         assertEquals("", deposit.findElement(By.cssSelector("td:nth-child(3)")).getText().trim());
         assertEquals("$100.00", deposit.findElement(By.cssSelector("td:nth-child(4)")).getText().trim());
+
+        // 8.5. Retrieve the transaction ID from the Funds Transfer Received link
+
+        WebElement transactionLink = deposit.findElement(By.tagName("a"));
+        String transactionHref = transactionLink.getDomAttribute("href");
+        String transactionId = transactionHref.substring(transactionHref.indexOf("id=") + 3);
+
+        // 8.6. Open the Transaction Details page
+
+        transactionLink.click();
+
+        Thread.sleep(2000);
+
+        // 8.7. Check the transaction details for the opening deposit
+
+        WebElement transactionDetails = driver.findElement(By.id("rightPanel"));
+
+        assertEquals("Transaction Details", transactionDetails.findElement(By.className("title")).getText().trim());
+        assertEquals(transactionId, transactionDetails.findElement(By.cssSelector("table tr:nth-child(1) td:nth-child(2)")).getText().trim());
+        assertTrue(transactionDetails.findElement(By.cssSelector("table tr:nth-child(2) td:nth-child(2)")).getText().trim().matches("[0-9]{2}-[0-9]{2}-[0-9]{4}"),
+                "The transaction date should be displayed as MM-dd-yyyy");
+        assertEquals("Funds Transfer Received", transactionDetails.findElement(By.cssSelector("table tr:nth-child(3) td:nth-child(2)")).getText().trim());
+        assertEquals("Credit", transactionDetails.findElement(By.cssSelector("table tr:nth-child(4) td:nth-child(2)")).getText().trim());
+        assertEquals("$100.00", transactionDetails.findElement(By.cssSelector("table tr:nth-child(5) td:nth-child(2)")).getText().trim());
 
         // 9. Compare the accounts after opening the new account
         driver.findElement(By.linkText("Accounts Overview")).click();
