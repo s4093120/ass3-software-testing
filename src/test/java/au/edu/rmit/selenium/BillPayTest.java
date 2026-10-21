@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpiraTestConfiguration(
     url = "https://demo-au.spiraservice.net/runaria",
-    login = "s4093120",
+    login = "s3923470",
     password = "123456",
     projectId = 24,
     testSetId = 15
@@ -91,7 +91,7 @@ class BillPayTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 350)
     @Order(1)
-    void payBillWithValidDetails() {
+    public void payBillWithValidDetails() {
         // Send payment
         driver.findElement(By.cssSelector("#billpayForm input[value='Send Payment']")).click();
 
@@ -129,7 +129,7 @@ class BillPayTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 351)
     @Order(2)
-    void payBillWithoutPayeeName() {
+    public void payBillWithoutPayeeName() {
         // Remove the payee name and send payment
         driver.findElement(By.name("payee.name")).clear();
         driver.findElement(By.cssSelector("#billpayForm input[value='Send Payment']")).click();
@@ -141,7 +141,7 @@ class BillPayTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 352)
     @Order(3)
-    void payBillWithMismatchedAccountNumbers() {
+    public void payBillWithMismatchedAccountNumbers() {
         // Enter a different account number and send payment
         WebElement verifyAccount = driver.findElement(By.name("verifyAccount"));
         verifyAccount.clear();
@@ -158,7 +158,7 @@ class BillPayTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 353)
     @Order(4)
-    void payBillWithoutAmount() {
+    public void payBillWithoutAmount() {
         // Remove the amount and send payment
         driver.findElement(By.name("amount")).clear();
         driver.findElement(By.cssSelector("#billpayForm input[value='Send Payment']")).click();
@@ -170,7 +170,7 @@ class BillPayTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 354)
     @Order(5)
-    void payBillWithNonNumericAmount() {
+    public void payBillWithNonNumericAmount() {
         // Enter a non-numeric amount and send payment
         WebElement amount = driver.findElement(By.name("amount"));
         amount.clear();

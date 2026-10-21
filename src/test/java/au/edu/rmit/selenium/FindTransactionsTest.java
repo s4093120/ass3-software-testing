@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpiraTestConfiguration(
     url = "https://demo-au.spiraservice.net/runaria",
-    login = "s4093120",
+    login = "s3923470",
     password = "123456",
     projectId = 24,
     testSetId = 16
@@ -99,7 +99,7 @@ class FindTransactionsTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 362)
     @Order(1)
-    void findTransactionById() {
+    public void findTransactionById() {
         preparePayment();
 
         // Search using the payment transaction ID
@@ -114,7 +114,7 @@ class FindTransactionsTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 363)
     @Order(2)
-    void findTransactionsByDate() {
+    public void findTransactionsByDate() {
         preparePayment();
 
         // Search using the date recorded by the website
@@ -131,7 +131,7 @@ class FindTransactionsTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 364)
     @Order(3)
-    void findTransactionsByDateRange() {
+    public void findTransactionsByDateRange() {
         preparePayment();
 
         // Search a date range including the payment date at both boundaries
@@ -149,7 +149,7 @@ class FindTransactionsTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 365)
     @Order(4)
-    void findTransactionsByAmount() {
+    public void findTransactionsByAmount() {
         preparePayment();
 
         // Search using the payment amount
@@ -166,7 +166,7 @@ class FindTransactionsTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 366)
     @Order(5)
-    void findTransactionsWithNoMatchingAmount() {
+    public void findTransactionsWithNoMatchingAmount() {
         // Search for an amount that does not match the test payments
         driver.findElement(By.id("amount")).sendKeys("987654321.09");
         driver.findElement(By.id("findByAmount")).click();
@@ -180,28 +180,28 @@ class FindTransactionsTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 367)
     @Order(6)
-    void findTransactionsWithoutTransactionId() {
+    public void findTransactionsWithoutTransactionId() {
         assertMissingSearchValue("findById", "transactionIdError", "Invalid transaction ID");
     }
 
     @Test
     @SpiraTestCase(testCaseId = 368)
     @Order(7)
-    void findTransactionsWithoutDate() {
+    public void findTransactionsWithoutDate() {
         assertMissingSearchValue("findByDate", "transactionDateError", "Invalid date format");
     }
 
     @Test
     @SpiraTestCase(testCaseId = 369)
     @Order(8)
-    void findTransactionsWithoutDateRange() {
+    public void findTransactionsWithoutDateRange() {
         assertMissingSearchValue("findByDateRange", "dateRangeError", "Invalid date format");
     }
 
     @Test
     @SpiraTestCase(testCaseId = 370)
     @Order(9)
-    void findTransactionsWithoutAmount() {
+    public void findTransactionsWithoutAmount() {
         assertMissingSearchValue("findByAmount", "amountError", "Invalid amount");
     }
 

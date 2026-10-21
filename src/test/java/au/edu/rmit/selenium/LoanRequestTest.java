@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpiraTestConfiguration(
     url = "https://demo-au.spiraservice.net/runaria",
-    login = "s4093120",
+    login = "s3923470",
     password = "123456",
     projectId = 24,
     testSetId = 17
@@ -73,7 +73,7 @@ class LoanRequestTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 355)
     @Order(1)
-    void requestLoanWithValidDetails() {
+    public void requestLoanWithValidDetails() {
         BigDecimal loanAmount = new BigDecimal("100.00");
         BigDecimal downPayment = new BigDecimal("50.00");
 
@@ -114,7 +114,7 @@ class LoanRequestTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 356)
     @Order(2)
-    void requestLoanWithInsufficientFunds() {
+    public void requestLoanWithInsufficientFunds() {
         // Set a down payment greater than all existing account balances
         BigDecimal totalBalance = BigDecimal.ZERO;
         for (BigDecimal balance : accountsBefore.values()) {
@@ -133,7 +133,7 @@ class LoanRequestTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 357)
     @Order(3)
-    void requestLoanWithNegativeAmount() {
+    public void requestLoanWithNegativeAmount() {
         // Fill details and apply
         applyForLoan("-100", "10");
 
@@ -144,28 +144,28 @@ class LoanRequestTest extends BaseTest {
     @Test
     @SpiraTestCase(testCaseId = 358)
     @Order(4)
-    void requestLoanWithoutAmountShowsError() {
+    public void requestLoanWithoutAmountShowsError() {
         assertInvalidDetailsShowsError("", "10");
     }
 
     @Test
     @SpiraTestCase(testCaseId = 359)
     @Order(5)
-    void requestLoanWithNonNumericAmountShowsError() {
+    public void requestLoanWithNonNumericAmountShowsError() {
         assertInvalidDetailsShowsError("abc", "10");
     }
 
     @Test
     @SpiraTestCase(testCaseId = 360)
     @Order(6)
-    void requestLoanWithoutDownPaymentShowsError() {
+    public void requestLoanWithoutDownPaymentShowsError() {
         assertInvalidDetailsShowsError("1000", "");
     }
 
     @Test
     @SpiraTestCase(testCaseId = 361)
     @Order(7)
-    void requestLoanWithZeroAmountShowsError() {
+    public void requestLoanWithZeroAmountShowsError() {
         assertInvalidDetailsShowsError("0", "10");
     }
 
