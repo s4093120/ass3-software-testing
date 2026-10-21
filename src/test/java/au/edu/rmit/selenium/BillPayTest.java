@@ -4,8 +4,13 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
 
+import com.inflectra.spiratest.addons.junitextension.SpiraTestCase;
+import com.inflectra.spiratest.addons.junitextension.SpiraTestConfiguration;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,6 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@SpiraTestConfiguration(
+    url = "https://demo-au.spiraservice.net/runaria",
+    login = "s4093120",
+    password = "123456",
+    projectId = 24,
+    testSetId = 15
+)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BillPayTest extends BaseTest {
 
     private static final BigDecimal PAYMENT_AMOUNT = new BigDecimal("25.00");
@@ -76,6 +89,8 @@ class BillPayTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 350)
+    @Order(1)
     void payBillWithValidDetails() {
         // Send payment
         driver.findElement(By.cssSelector("#billpayForm input[value='Send Payment']")).click();
@@ -112,6 +127,8 @@ class BillPayTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 351)
+    @Order(2)
     void payBillWithoutPayeeName() {
         // Remove the payee name and send payment
         driver.findElement(By.name("payee.name")).clear();
@@ -122,6 +139,8 @@ class BillPayTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 352)
+    @Order(3)
     void payBillWithMismatchedAccountNumbers() {
         // Enter a different account number and send payment
         WebElement verifyAccount = driver.findElement(By.name("verifyAccount"));
@@ -137,6 +156,8 @@ class BillPayTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 353)
+    @Order(4)
     void payBillWithoutAmount() {
         // Remove the amount and send payment
         driver.findElement(By.name("amount")).clear();
@@ -147,6 +168,8 @@ class BillPayTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 354)
+    @Order(5)
     void payBillWithNonNumericAmount() {
         // Enter a non-numeric amount and send payment
         WebElement amount = driver.findElement(By.name("amount"));

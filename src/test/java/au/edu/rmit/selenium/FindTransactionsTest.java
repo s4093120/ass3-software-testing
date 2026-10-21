@@ -3,11 +3,14 @@ package au.edu.rmit.selenium;
 import java.time.Duration;
 import java.util.List;
 
+import com.inflectra.spiratest.addons.junitextension.SpiraTestCase;
+import com.inflectra.spiratest.addons.junitextension.SpiraTestConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,6 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpiraTestConfiguration(
+    url = "https://demo-au.spiraservice.net/runaria",
+    login = "s4093120",
+    password = "123456",
+    projectId = 24,
+    testSetId = 16
+)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FindTransactionsTest extends BaseTest {
 
     private WebDriverWait wait;
@@ -86,6 +97,8 @@ class FindTransactionsTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 362)
+    @Order(1)
     void findTransactionById() {
         preparePayment();
 
@@ -99,6 +112,8 @@ class FindTransactionsTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 363)
+    @Order(2)
     void findTransactionsByDate() {
         preparePayment();
 
@@ -114,6 +129,8 @@ class FindTransactionsTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 364)
+    @Order(3)
     void findTransactionsByDateRange() {
         preparePayment();
 
@@ -130,6 +147,8 @@ class FindTransactionsTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 365)
+    @Order(4)
     void findTransactionsByAmount() {
         preparePayment();
 
@@ -145,6 +164,8 @@ class FindTransactionsTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 366)
+    @Order(5)
     void findTransactionsWithNoMatchingAmount() {
         // Search for an amount that does not match the test payments
         driver.findElement(By.id("amount")).sendKeys("987654321.09");
@@ -156,14 +177,35 @@ class FindTransactionsTest extends BaseTest {
         assertFalse(driver.findElement(By.id("errorContainer")).isDisplayed());
     }
 
-    @ParameterizedTest(name = "Missing search value: {0}")
-    @CsvSource(textBlock = """
-        findById,        transactionIdError,   Invalid transaction ID
-        findByDate,      transactionDateError, Invalid date format
-        findByDateRange, dateRangeError,       Invalid date format
-        findByAmount,    amountError,          Invalid amount
-        """)
-    void findTransactionsWithoutSearchValue(String buttonId, String errorId, String message) {
+    @Test
+    @SpiraTestCase(testCaseId = 367)
+    @Order(6)
+    void findTransactionsWithoutTransactionId() {
+        assertMissingSearchValue("findById", "transactionIdError", "Invalid transaction ID");
+    }
+
+    @Test
+    @SpiraTestCase(testCaseId = 368)
+    @Order(7)
+    void findTransactionsWithoutDate() {
+        assertMissingSearchValue("findByDate", "transactionDateError", "Invalid date format");
+    }
+
+    @Test
+    @SpiraTestCase(testCaseId = 369)
+    @Order(8)
+    void findTransactionsWithoutDateRange() {
+        assertMissingSearchValue("findByDateRange", "dateRangeError", "Invalid date format");
+    }
+
+    @Test
+    @SpiraTestCase(testCaseId = 370)
+    @Order(9)
+    void findTransactionsWithoutAmount() {
+        assertMissingSearchValue("findByAmount", "amountError", "Invalid amount");
+    }
+
+    private void assertMissingSearchValue(String buttonId, String errorId, String message) {
         // Search without entering the required value
         driver.findElement(By.id(buttonId)).click();
 

@@ -6,10 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inflectra.spiratest.addons.junitextension.SpiraTestCase;
+import com.inflectra.spiratest.addons.junitextension.SpiraTestConfiguration;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,6 +23,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SpiraTestConfiguration(
+    url = "https://demo-au.spiraservice.net/runaria",
+    login = "s4093120",
+    password = "123456",
+    projectId = 24,
+    testSetId = 17
+)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LoanRequestTest extends BaseTest {
 
     private WebDriverWait wait;
@@ -60,6 +71,8 @@ class LoanRequestTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 355)
+    @Order(1)
     void requestLoanWithValidDetails() {
         BigDecimal loanAmount = new BigDecimal("100.00");
         BigDecimal downPayment = new BigDecimal("50.00");
@@ -99,6 +112,8 @@ class LoanRequestTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 356)
+    @Order(2)
     void requestLoanWithInsufficientFunds() {
         // Set a down payment greater than all existing account balances
         BigDecimal totalBalance = BigDecimal.ZERO;
@@ -116,6 +131,8 @@ class LoanRequestTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 357)
+    @Order(3)
     void requestLoanWithNegativeAmount() {
         // Fill details and apply
         applyForLoan("-100", "10");
@@ -124,14 +141,35 @@ class LoanRequestTest extends BaseTest {
         assertDenied();
     }
 
-    @ParameterizedTest(name = "{0}")
-    @CsvSource(textBlock = """
-        Missing loan amount,  '',   10
-        Non-numeric amount,   abc,  10
-        Missing down payment, 1000, ''
-        Zero loan amount,     0,    10
-        """)
-    void requestLoanWithInvalidDetailsShowsError(String scenario, String amount, String downPayment) {
+    @Test
+    @SpiraTestCase(testCaseId = 358)
+    @Order(4)
+    void requestLoanWithoutAmountShowsError() {
+        assertInvalidDetailsShowsError("", "10");
+    }
+
+    @Test
+    @SpiraTestCase(testCaseId = 359)
+    @Order(5)
+    void requestLoanWithNonNumericAmountShowsError() {
+        assertInvalidDetailsShowsError("abc", "10");
+    }
+
+    @Test
+    @SpiraTestCase(testCaseId = 360)
+    @Order(6)
+    void requestLoanWithoutDownPaymentShowsError() {
+        assertInvalidDetailsShowsError("1000", "");
+    }
+
+    @Test
+    @SpiraTestCase(testCaseId = 361)
+    @Order(7)
+    void requestLoanWithZeroAmountShowsError() {
+        assertInvalidDetailsShowsError("0", "10");
+    }
+
+    private void assertInvalidDetailsShowsError(String amount, String downPayment) {
         // Fill invalid details and apply
         applyForLoan(amount, downPayment);
 
