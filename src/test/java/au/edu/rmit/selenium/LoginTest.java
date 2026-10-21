@@ -1,5 +1,8 @@
 package au.edu.rmit.selenium;
 
+import com.inflectra.spiratest.addons.junitextension.SpiraTestCase;
+import com.inflectra.spiratest.addons.junitextension.SpiraTestConfiguration;
+
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
@@ -16,6 +19,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 //Test Method Orderer for controlling the order of test execution
 
+@SpiraTestConfiguration(
+        url = "https://demo-au.spiraservice.net/runaria",
+        login = "s3923470",
+        password = "123456",
+        projectId = 24,
+        testSetId = 12
+)
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(2)
 class LoginTest extends BaseTest {
@@ -23,8 +34,9 @@ class LoginTest extends BaseTest {
     // Login with valid details test
 
     @Test
+    @SpiraTestCase(testCaseId = 319)
     @Order(1)
-    void loginWithValidDetails() throws InterruptedException {
+    public void loginWithValidDetails() throws InterruptedException {
 
         // 1. Set valid login password
 
@@ -58,8 +70,9 @@ class LoginTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 330)
     @Order(4)
-    void loginWithBlankDetails() throws InterruptedException{
+    public void loginWithBlankDetails() throws InterruptedException{
 
         // 1. Open ParaBank in Chrome
 
@@ -96,8 +109,9 @@ class LoginTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 332)
     @Order(5)
-    void loginWithBlankUsername() throws InterruptedException{
+    public void loginWithBlankUsername() throws InterruptedException{
 
         // 1. Open ParaBank in Chrome
 
@@ -134,8 +148,9 @@ class LoginTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 333)
     @Order(6)
-    void loginWithBlankPassword() throws InterruptedException{
+    public void loginWithBlankPassword() throws InterruptedException{
 
         // 1. Open ParaBank in Chrome
 
@@ -168,8 +183,9 @@ class LoginTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 322)
     @Order(2)
-    void loginWithInvalidUsername() throws InterruptedException {
+    public void loginWithInvalidUsername() throws InterruptedException {
 
         // 1. Set valid login password
 
@@ -214,8 +230,9 @@ class LoginTest extends BaseTest {
     // Login Test with invalidPassword
 
     @Test
+    @SpiraTestCase(testCaseId = 321)
     @Order(3)
-    void loginWithInvalidPassword() throws InterruptedException {
+    public void loginWithInvalidPassword() throws InterruptedException {
 
         // 1. Set valid login password
 

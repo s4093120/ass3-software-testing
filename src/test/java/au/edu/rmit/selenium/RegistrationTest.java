@@ -1,5 +1,8 @@
 package au.edu.rmit.selenium;
 
+import com.inflectra.spiratest.addons.junitextension.SpiraTestCase;
+import com.inflectra.spiratest.addons.junitextension.SpiraTestConfiguration;
+
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,6 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
+
+@SpiraTestConfiguration(
+        url = "https://demo-au.spiraservice.net/runaria",
+        login = "s3923470",
+        password = "123456",
+        projectId = 24,
+        testSetId = 11
+)
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(1)
@@ -61,6 +72,7 @@ class RegistrationTest extends BaseTest {
     // Register with valid details
 
     @Test
+    @SpiraTestCase(testCaseId = 316)
     @Order(1)
     public void RegisterValidDetails() throws InterruptedException {
 
@@ -98,6 +110,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 344)
     @Order(4)
     public void RegisterWithEmptyDetails() throws InterruptedException {
 
@@ -145,6 +158,7 @@ class RegistrationTest extends BaseTest {
     // INVALID TESTS
 
     @Test
+    @SpiraTestCase(testCaseId = 345)
     @Order(5)
     public void RegisterWithSingleLetterDetails() throws InterruptedException {
 
@@ -189,6 +203,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 338)
     @Order(6)
     public void RegisterWithAmpersandFirstName() throws InterruptedException {
 
@@ -197,6 +212,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 335)
     @Order(7)
     public void RegisterWithAmpersandLastName() throws InterruptedException {
 
@@ -205,6 +221,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 341)
     @Order(8)
     public void RegisterWithAmpersandAddress() throws InterruptedException {
 
@@ -213,6 +230,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 337)
     @Order(9)
     public void RegisterWithAmpersandCity() throws InterruptedException {
 
@@ -221,6 +239,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 339)
     @Order(10)
     public void RegisterWithAmpersandState() throws InterruptedException {
 
@@ -229,6 +248,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 340)
     @Order(11)
     public void RegisterWithAmpersandZipCode() throws InterruptedException {
 
@@ -237,6 +257,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 342)
     @Order(12)
     public void RegisterWithAmpersandPhoneNumber() throws InterruptedException {
 
@@ -245,6 +266,7 @@ class RegistrationTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 346)
     @Order(13)
     public void RegisterWithAmpersandSsn() throws InterruptedException {
 
@@ -255,6 +277,7 @@ class RegistrationTest extends BaseTest {
     // Registering with same username
 
     @Test
+    @SpiraTestCase(testCaseId = 317)
     @Order(2)
     public void RegisterDuplicateUsername() throws InterruptedException {
 
@@ -293,6 +316,7 @@ class RegistrationTest extends BaseTest {
     }
 
         @Test
+    @SpiraTestCase(testCaseId = 318)
     @Order(3)
     public void RegisterDifferentPasswords() throws InterruptedException {
 

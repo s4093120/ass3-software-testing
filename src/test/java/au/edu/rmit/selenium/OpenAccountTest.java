@@ -1,5 +1,8 @@
 package au.edu.rmit.selenium;
 
+import com.inflectra.spiratest.addons.junitextension.SpiraTestCase;
+import com.inflectra.spiratest.addons.junitextension.SpiraTestConfiguration;
+
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,13 +17,22 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 
+@SpiraTestConfiguration(
+        url = "https://demo-au.spiraservice.net/runaria",
+        login = "s3923470",
+        password = "123456",
+        projectId = 24,
+        testSetId = 13
+)
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(3)
 class OpenAccountTest extends BaseTest {
 
     @Test
+    @SpiraTestCase(testCaseId = 324)
     @Order(1)
-    void OpenNewAccountValidChecking() throws InterruptedException {
+    public void OpenNewAccountValidChecking() throws InterruptedException {
 
         // 1. Set valid login details
 
@@ -166,8 +178,9 @@ class OpenAccountTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 325)
     @Order(2)
-    void OpenNewAccountValidSavings() throws InterruptedException {
+    public void OpenNewAccountValidSavings() throws InterruptedException {
 
         // 1. Set valid login details
 
@@ -330,8 +343,9 @@ class OpenAccountTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 326)
     @Order(3)
-    void OpenAccountsUntilNegative() throws InterruptedException {
+    public void OpenAccountsUntilNegative() throws InterruptedException {
 
         // 1. Open ParaBank in Chrome
 
@@ -465,8 +479,9 @@ class OpenAccountTest extends BaseTest {
     }
 
     @Test
+    @SpiraTestCase(testCaseId = 328)
     @Order(4)
-    void OpenNewAccountUsingSecondFundingAccount() throws InterruptedException {
+    public void OpenNewAccountUsingSecondFundingAccount() throws InterruptedException {
 
         // 1. Open ParaBank in Chrome
 
